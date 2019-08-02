@@ -19,7 +19,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group([
 	'middleware' => 'api',
-	'prefix' => 'auth'
+	'prefix' => 'auth',
+	'namespace' => 'Api'
 ], function () {
     Route::post('authenticate', 'AuthController@authenticate')->name('api.authenticate');
     Route::post('register', 'AuthController@register')->name('api.register');

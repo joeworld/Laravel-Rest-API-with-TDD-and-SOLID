@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\User;
 use Illuminate\Http\Request;
@@ -9,6 +9,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 use App\Http\Requests\Api\LoginRequest;
 use App\Http\Requests\Api\RegisterRequest;
+use App\Http\Controllers\Controller;
 
 class AuthController extends Controller
 {
