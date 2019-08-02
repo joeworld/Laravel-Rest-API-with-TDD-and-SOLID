@@ -34,4 +34,33 @@ class AuthTest extends TestCase
 
     }
 
+    /**
+     * Test User Login
+     */
+
+    public function testLogin()
+    {
+        
+        //Create user
+        User::create([
+            'name' => 'test',
+            'email'=>'test@gmail.com',
+            'password' => bcrypt('secret1234')
+        ]);
+
+        $data = [
+            'email' => 'test@gmail.com',
+            'password' => 'secret1234',
+        ]
+
+        //attempt login
+        $response = $this->json('POST',route('api.authenticate'), $data);
+        //Assert it was successful and a token was received
+        $response->assertStatus(200);
+        $this->assertArrayHasKey('token',$response->json());
+        //Delete the user
+        User::where('email','test@gmail.com')->delete();
+
+    }
+
 }
