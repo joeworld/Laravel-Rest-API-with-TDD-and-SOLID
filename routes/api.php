@@ -13,9 +13,11 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+//Authentication Routes
 
 Route::group([
 	'middleware' => 'api',
@@ -24,4 +26,15 @@ Route::group([
 ], function () {
     Route::post('authenticate', 'AuthController@authenticate')->name('api.authenticate');
     Route::post('register', 'AuthController@register')->name('api.register');
+});
+
+//Todo Routes
+
+Route::group([
+	'namespace' => 'Api',
+	'middleware' => 'api,auth'
+], function(){
+
+Route::resource('todo', 'TodoController');
+
 });
