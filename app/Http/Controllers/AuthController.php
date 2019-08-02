@@ -7,17 +7,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
+use App\Http\Requests\Api\LoginRequest;
+use App\Http\Requests\Api\RegisterRequest;
+
 class AuthController extends Controller
 {
 
-	public function authenticate(Request $request){
-
-        //Validate fields
-        $this->validate($request,
-        [
-        'email' => 'required|email',
-        'password' => 'required'
-        ]);
+	public function authenticate(LoginRequest $request){
 
         //Attempt validation
         $credentials = $request->only(['email','password']);
@@ -30,14 +26,7 @@ class AuthController extends Controller
 
     }
 
-    public function register(Request $request){
-
-        //Validate fields
-        $this->validate($request,[
-            'email' => 'required|email|max:255|unique:users',
-            'name' => 'required|max:255',
-            'password' => 'required|min:8|confirmed',
-        ]);
+    public function register(RegisterRequest $request){
 
         //Create user, generate token and return
         $user =  User::create([
