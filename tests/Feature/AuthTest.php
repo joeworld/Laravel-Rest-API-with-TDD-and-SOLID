@@ -51,7 +51,7 @@ class AuthTest extends TestCase
         $data = [
             'email' => 'test@gmail.com',
             'password' => 'secret1234',
-        ]
+        ];
 
         //attempt login
         $response = $this->json('POST',route('api.authenticate'), $data);
