@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\User;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -11,6 +12,7 @@ class AuthTest extends TestCase
 
     /**
      * Test User Registration
+     * @test
      */
 
     public function testRegister()
@@ -36,6 +38,7 @@ class AuthTest extends TestCase
 
     /**
      * Test User Login
+     *@test
      */
 
     public function testLogin()
@@ -45,16 +48,16 @@ class AuthTest extends TestCase
         User::create([
             'name' => 'test',
             'email'=>'test@gmail.com',
-            'password' => bcrypt('secret1234')
+            'password' => bcrypt('secret123$')
         ]);
 
         $data = [
             'email' => 'test@gmail.com',
-            'password' => 'secret1234',
+            'password' => 'secret123$',
         ];
 
         //attempt login
-        $response = $this->json('POST',route('api.authenticate'), $data);
+        $response = $this->json('POST', route('api.authenticate'), $data);
         //Assert it was successful and a token was received
         $response->assertStatus(200);
         $this->assertArrayHasKey('token',$response->json());

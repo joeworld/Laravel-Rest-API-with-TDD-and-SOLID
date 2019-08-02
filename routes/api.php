@@ -21,6 +21,6 @@ Route::group([
 	'middleware' => 'api',
 	'prefix' => 'auth'
 ], function () {
-    Route::get('authenticate', 'AuthController@authenticate')->name('api.authenticate');
+    Route::post('authenticate', 'AuthController@authenticate')->name('api.authenticate');
     Route::post('register', 'AuthController@register')->name('api.register');
 });
