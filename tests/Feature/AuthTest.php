@@ -10,6 +10,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class AuthTest extends TestCase
 {
 
+    use RefreshDatabase;
+
     /**
      * Test User Registration
      * @test
@@ -31,9 +33,6 @@ class AuthTest extends TestCase
         $response->assertStatus(200);
         //Assert that a token was received
         $this->assertArrayHasKey('token', $response->json());
-        //Delete data
-        User::where('email', 'test@gmail.com')->delete();
-
     }
 
     /**
@@ -61,9 +60,6 @@ class AuthTest extends TestCase
         //Assert it was successful and a token was received
         $response->assertStatus(200);
         $this->assertArrayHasKey('token',$response->json());
-        //Delete the user
-        User::where('email','test@gmail.com')->delete();
-
     }
 
 }

@@ -32,7 +32,8 @@ Route::group([
 
 Route::group([
 	'namespace' => 'Api',
-	'middleware' => 'api,auth'
+	'prefix' => 'auth',
+	'middleware' => ['api','auth']
 ], function(){
 
 Route::resource('todo', 'TodoController');

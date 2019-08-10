@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\CreateTodoRequest;
+use App\Http\Requests\Api\UpdateTodoRequest;
+use Illuminate\Support\Facades\Auth;
+use App\Todo;
 
 class TodoController extends Controller
 {
@@ -15,7 +18,7 @@ class TodoController extends Controller
      */
     public function index()
     {
-        //
+        return Auth::user()->todos;
     }
 
     /**
@@ -50,9 +53,14 @@ class TodoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Todo $todo)
     {
-        //
+        //Check is user is the owner of the todo
+        if($todo->author_id != Auth::id()){
+            abort(404);
+            return;
+        }
+        return $todo->toJson();
     }
 
     /**
@@ -73,19 +81,30 @@ class TodoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateTodoRequest $request, Todo $todo)
     {
-        //
+        //Check is user is the owner of the todo
+        if($todo->author_id != Auth::id()){
+            abort(404);
+            return;
+        }
+        //Update
+        $todo->update($request->only('title','summary','content'));
+        return $todo->toJson();
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Todo $todo)
     {
-        //
+        //Check is user is the owner of the todo
+        if($todo->author_id != Auth::id()){
+            abort(404);
+            return;
+        }
+        $todo->delete();
     }
 }
