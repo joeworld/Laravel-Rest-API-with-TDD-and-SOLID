@@ -8,9 +8,18 @@ use App\Http\Requests\Api\CreateTodoRequest;
 use App\Http\Requests\Api\UpdateTodoRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Todo;
+use App\Factories\TodoFactory;
 
 class TodoController extends Controller
 {
+
+    private $todo;
+
+    public function  __construct(TodoFactory $todo)
+    {
+        $this->todo = $todo::createApi();
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -39,12 +48,7 @@ class TodoController extends Controller
      */
     public function store(CreateTodoRequest $request)
     {
-        //Create Todo and attach to user
-        $user = Auth::user();
-        $todo = Todo::create($request->only(['title', 'summary', 'content']));
-        $user->todos()->save($todo);
-        //Return json of todo
-        return $todo->toJson();
+        return $this->todo->create($request);
     }
 
     /**
@@ -60,7 +64,7 @@ class TodoController extends Controller
             abort(404);
             return;
         }
-        return $todo->toJson();
+        return $this->todo->get('id', $todo->id);
     }
 
     /**
@@ -89,9 +93,7 @@ class TodoController extends Controller
             abort(404);
             return;
         }
-        //Update
-        $todo->update($request->only('title','summary','content'));
-        return $todo->toJson();
+        $this->todo->update($request, $todo);
     }
 
     /**
@@ -106,6 +108,6 @@ class TodoController extends Controller
             abort(404);
             return;
         }
-        $todo->delete();
+        $this->todo->delete($todo);
     }
 }
