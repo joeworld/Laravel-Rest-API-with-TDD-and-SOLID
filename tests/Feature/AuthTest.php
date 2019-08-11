@@ -59,7 +59,7 @@ class AuthTest extends TestCase
         $response = $this->json('POST', route('api.authenticate'), $data);
         //Assert it was successful and a token was received
         $response->assertStatus(200);
-        $this->assertArrayHasKey('token',$response->json());
+        $this->assertArrayHasKey('token', $response->json());
     }
 
 }

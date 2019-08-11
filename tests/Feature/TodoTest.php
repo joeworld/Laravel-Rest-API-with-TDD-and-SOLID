@@ -130,7 +130,7 @@ class TodoTest extends TestCase
         $todo = $this->createTodo();
         $response = $this->withHeaders([
             'Authorization' => 'Bearer '. $token
-        ])->json('PUT', route('todo.destroy', [
+        ])->json('DELETE', route('todo.destroy', [
             'todo' => $todo->id
         ])
         );

@@ -84,7 +84,8 @@ class TodoController extends Controller
     public function update(UpdateTodoRequest $request, Todo $todo)
     {
         //Check is user is the owner of the todo
-        if($todo->author_id != Auth::id()){
+        if($todo->author_id != Auth::id())
+        {
             abort(404);
             return;
         }
