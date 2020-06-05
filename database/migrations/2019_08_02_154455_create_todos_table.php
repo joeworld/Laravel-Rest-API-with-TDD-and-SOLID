@@ -15,10 +15,11 @@ class CreateTodosTable extends Migration
     {
         Schema::create('todos', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('author_id',false)->index()->nullable();
             $table->string('title');
             $table->text('summary');
             $table->longText('content');
-            $table->tinyInteger('author_id')->nullable();
+            $table->foreign('author_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
