@@ -12,29 +12,36 @@ use Illuminate\Support\Facades\Auth;
 
 class TodoApiRepository implements RepositoryInterface
 {
+    
+    private $todo;
+    
+    public function __construct()
+    {
+        $this->todo = Todo::class;
+    }
 
 	public function get($type, $value)
 	{
-		return Todo::where($type, $value)->first()->toJson();
+		return $this->todo::where($type, $value)->first()->toJson();
 	}
 
 	public function getAll($order = null, $limit = null)
 	{
 
 		if($order === null && $limit === null):
-			return Todo::all()
+			return $this->todo::all()
 			->toJson();
 		elseif($order !== null && $limit === null):
-			return Todo::all()
+			return $this->todo::all()
 			->orderBy('id', $order)
 			->get()
 			->toJson();
 		elseif($order === null && $limit !== null):
-			return Todo::all()
+			return $this->todo::all()
 			->take($limit)
 			->get()->toJson();
 		else:
-			return Todo::all()
+			return $this->todo::all()
 			->orderBy('id', $order)
 			->take($limit)
 			->get()
@@ -47,7 +54,7 @@ class TodoApiRepository implements RepositoryInterface
 	{
         //Create Todo and attach to user
         $user = Auth::user();
-        $todo = Todo::create($request->only(['title', 'summary', 'content']));
+        $todo = $this->todo::create($request->only(['title', 'summary', 'content']));
         $user->todos()->save($todo);
         //Return json of todo
         return $todo->toJson();	
